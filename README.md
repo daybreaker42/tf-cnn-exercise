@@ -16,6 +16,35 @@
 - TensorFlow 2.19.0
 - NumPy
 
+## 환경 설정 및 설치 방법
+
+### 1. Python 3.11 가상 환경 설정
+
+#### Windows에서 설정
+```bash
+# 가상 환경 생성
+python -m venv venv_cnn_py311 --python=3.11
+
+# 가상 환경 활성화
+venv_cnn_py311\Scripts\activate
+```
+
+#### macOS/Linux에서 설정
+```bash
+# 가상 환경 생성
+python3.11 -m venv venv_cnn_py311
+
+# 가상 환경 활성화
+source venv_cnn_py311/bin/activate
+```
+
+### 2. 필요한 라이브러리 설치
+가상 환경을 활성화한 후 다음 명령어를 실행하여 필요한 라이브러리를 설치합니다:
+```bash
+pip install tensorflow==2.19.0 numpy
+```
+> 참고: Apple Silicon(M1/M2) Mac 사용자는 `tensorflow-macos`를 설치해야 할 수 있습니다.
+
 ## 모델 아키텍처
 
 이 프로젝트에서 사용된 CNN 모델은 다음과 같은 구조를 가집니다:
@@ -34,17 +63,12 @@ MNIST 손글씨 숫자 데이터셋을 사용합니다:
 
 ## 사용 방법
 
-1. 필요한 라이브러리 설치:
-```
-pip install tensorflow numpy
-```
-
-2. 프로젝트 실행:
-```
+1. 가상 환경 활성화 후 프로젝트 실행:
+```bash
 python main.py
 ```
 
-3. 실행 결과:
+2. 실행 결과:
 - 학습 전 모델의 성능 평가
 - 1 에포크 학습 수행
 - 테스트 데이터셋에 대한 최종 성능 평가
@@ -58,4 +82,5 @@ python main.py
 - [TensorFlow 공식 문서](https://www.tensorflow.org/)
 - [MNIST 데이터셋](http://yann.lecun.com/exdb/mnist/)
 - [CNN 개요](https://cs231n.github.io/convolutional-networks/)
+- [Python 가상 환경 문서](https://docs.python.org/3.11/library/venv.html)
 
