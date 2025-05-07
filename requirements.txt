@@ -1,1 +1,3 @@
 tensorflow==2.19.0
+mathplotlib==3.10.1
+scipy==1.15.2
