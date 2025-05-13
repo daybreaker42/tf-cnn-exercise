@@ -31,7 +31,9 @@ print(f"  Accuracy: {accuracy:.4f}")
 print("------------------------------------------------------------------------------")
 
 # 모델 학습
-model.fit(x_train, y_train, epochs=1, batch_size=64)
+EPOCHS = 1
+BATCH_SIZE = 64
+model.fit(x_train, y_train, epochs=EPOCHS, batch_size=BATCH_SIZE)
 
 # 모델 저장 코드 추가
 # model_save_path = 'saved_models/tensorflow_mnist_cnn'
@@ -64,6 +66,7 @@ predictions = model.predict(x_test[:TEST_NUM]) # 테스트 데이터에서 TEST_
 # for i, prediction in enumerate(predictions):
 #     print(f"Sample {i}: {prediction}")
 
+
 # 전체 test 데이터에 대한 예측 결과 출력
 loss, accuracy = model.evaluate(x_test, y_test, verbose=0)
 print("------------------------------------------------------------------------------")
@@ -71,3 +74,22 @@ print("학습 후 전체 test 데이터에 대한 예측 결과")
 print(f"  Loss: {loss:.4f}")
 print(f"  Accuracy: {accuracy:.4f}")
 print("------------------------------------------------------------------------------")
+
+# 모델 저장
+MODEL_DIRECTORY = 'models'
+MODEL_FILENAME = 'mnist_model.h5'
+script_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(script_dir, MODEL_DIRECTORY, MODEL_FILENAME)
+
+# 모델 파일 이름이 이미 존재하는 경우, 버전 번호를 추가하여 중복을 피합니다.
+version = 1
+while os.path.exists(model_path):
+    MODEL_FILENAME = f'mnist_model_v{version}.h5'
+    model_path = os.path.join(script_dir, MODEL_DIRECTORY, MODEL_FILENAME)
+    version += 1
+
+# 저장할 디렉토리가 없으면 생성
+if not os.path.exists(MODEL_DIRECTORY):
+    os.makedirs(MODEL_DIRECTORY)
+model.save(model_path)
+print(f"모델이 '{MODEL_FILENAME}'로 저장되었습니다.")

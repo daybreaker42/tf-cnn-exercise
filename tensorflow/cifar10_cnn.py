@@ -5,31 +5,33 @@ import numpy as np
 # CIFAR-10 데이터셋을 위한 CNN 모델 정의
 # CIFAR-10은 32x32 컬러 이미지이므로 입력 형태를 (32, 32, 3)으로 설정합니다.
 model = tf.keras.models.Sequential([
-    # 첫 번째 컨볼루션 레이어
-    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(32, 32, 3)),  # 필터 수 축소 (64→32)
+    # 첫 번째 컨볼루션 레이어 - 더 깊은 네트워크 구성
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same', input_shape=(32, 32, 3)),
     tf.keras.layers.BatchNormalization(),  # 배치 정규화 추가
-    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', padding='same'),  # 필터 수 축소 (64→32)
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
     tf.keras.layers.BatchNormalization(),
     tf.keras.layers.MaxPooling2D((2, 2)),
     tf.keras.layers.Dropout(0.2),  # 과적합 방지를 위한 드롭아웃 추가
     
     # 두 번째 컨볼루션 레이어
-    tf.keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same'),  # 필터 수 축소 (128→64)
+    tf.keras.layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
     tf.keras.layers.BatchNormalization(),
-    tf.keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same'),  # 필터 수 축소 (128→64)
+    tf.keras.layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
     tf.keras.layers.BatchNormalization(),
     tf.keras.layers.MaxPooling2D((2, 2)),
     tf.keras.layers.Dropout(0.3),
     
-    # 세 번째 컨볼루션 레이어 (더 간소화)
-    tf.keras.layers.Conv2D(128, (3, 3), activation='relu', padding='same'),  # 필터 수 축소 (256→128)
+    # 세 번째 컨볼루션 레이어
+    tf.keras.layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
     tf.keras.layers.BatchNormalization(),
     tf.keras.layers.MaxPooling2D((2, 2)),
     tf.keras.layers.Dropout(0.4),
     
     # 분류를 위한 완전 연결 레이어
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(256, activation='relu'),  # 뉴런 수 축소 (512→256)
+    tf.keras.layers.Dense(512, activation='relu'),
     tf.keras.layers.BatchNormalization(),
     tf.keras.layers.Dropout(0.5),
     tf.keras.layers.Dense(10, activation='softmax')  # CIFAR-10은 10개의 클래스가 있습니다
@@ -98,12 +100,23 @@ history = model.fit(
 )
 
 # 모델 저장
-dir_path = 'saved_models/tensorflow/cifar10_cnn'
+MODEL_DIRECTORY = 'models'
+MODEL_FILENAME = 'cifar10_model.h5'
+script_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(script_dir, MODEL_DIRECTORY, MODEL_FILENAME)
+
+# 모델 파일 이름이 이미 존재하는 경우, 버전 번호를 추가하여 중복을 피합니다.
+version = 1
+while os.path.exists(model_path):
+    MODEL_FILENAME = f'cifar10_model_v{version}.h5'
+    model_path = os.path.join(script_dir, MODEL_DIRECTORY, MODEL_FILENAME)
+    version += 1
+
 # 저장할 디렉토리가 없으면 생성
-if not os.path.exists(dir_path):
-    os.makedirs(dir_path)
-model.save(os.path.join(dir_path, 'cifar10_model.h5'))
-print("모델이 'cifar10_model.h5'로 저장되었습니다.")
+if not os.path.exists(MODEL_DIRECTORY):
+    os.makedirs(MODEL_DIRECTORY)
+model.save(model_path)
+print(f"모델이 '{MODEL_FILENAME}'로 저장되었습니다.")
 
 # 테스트용 샘플 예측
 TEST_NUM = 5  # 예측할 샘플 수

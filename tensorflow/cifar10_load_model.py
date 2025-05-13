@@ -155,8 +155,8 @@ def predict_external_image(image_path):
         print(f"외부 이미지 예측 중 오류 발생: {e}")
 
 # 임의의 테스트 이미지 5개에 대한 예측 실행
-print("\n임의의 테스트 이미지에 대한 예측 실행...")
-predict_random_images(5)
+# print("\n임의의 테스트 이미지에 대한 예측 실행...")
+# predict_random_images(5)
 
 # 외부 이미지 경로가 있을 경우 예측 예시
 # 주석을 해제하고 유효한 이미지 경로로 변경하여 사용
